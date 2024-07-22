@@ -19,7 +19,7 @@ export const postData = async (url: string, data: any, addHeaders?: any) => {
   });
   if (!res.ok) {
     const e = await res.json();
-    const error = new Error(e.error.message);
+    const error = e;
     throw error;
   }
   const contentType = res.headers.get("content-type");
@@ -39,7 +39,7 @@ export const deleteData = async (url: string, addHeaders?: any) => {
   });
   if (!res.ok) {
     const e = await res.json();
-    const error = new Error(e.error.message);
+    const error = e;
     throw error;
   }
   return;
@@ -56,8 +56,7 @@ export const fetcher = async (url: string, addHeaders?: any) => {
   });
   if (!res.ok) {
     const e = await res.json();
-    const error = new Error(e.error.message);
-    throw error;
+    throw e;
   }
   return await res.json();
 };
