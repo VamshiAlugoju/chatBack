@@ -3,6 +3,8 @@ import cors from "cors";
 import connectDb from "./config/dbConfig";
 import * as userController from "./controllers/userController";
 import { authMiddleware } from "./middleware/authMiddleware";
+import * as channels from "./controllers/channelController";
+import * as messages from "./controllers/messageController";
 import * as workspaceControler from "./controllers/workSpaceController";
 const app = express();
 
@@ -11,6 +13,7 @@ app.use(cors());
 
 const channelsRouter = express.Router();
 // channelsRouter.use(authMiddleware);
+channelsRouter.get("/:workspace_id", channels.getAllChanells);
 // channelsRouter.post("/", channels.createChannel);
 // channelsRouter.post("/:id", channels.updateChannel);
 // channelsRouter.post("/:id/members", channels.addMember);
@@ -31,6 +34,7 @@ const directsRouter = express.Router();
 const workspacesRouter = express.Router();
 workspacesRouter.use(authMiddleware);
 workspacesRouter.post("/", workspaceControler.createWorkSpace);
+workspacesRouter.get("/", workspaceControler.getAllWorkspaces);
 // workspacesRouter.post("/:id", workspaces.updateWorkspace);
 // workspacesRouter.delete("/:id", workspaces.deleteWorkspace);
 // workspacesRouter.post("/:id/members", workspaces.addTeammate);
@@ -38,7 +42,7 @@ workspacesRouter.post("/", workspaceControler.createWorkSpace);
 
 const messagesRouter = express.Router();
 // messagesRouter.use(authMiddleware);
-// messagesRouter.post("/", messages.createMessage);
+messagesRouter.post("/", messages.createMessage);
 // messagesRouter.post("/:id", messages.editMessage);
 // messagesRouter.delete("/:id", messages.deleteMessage);
 // messagesRouter.post("/:id/reactions", messages.editMessageReaction);

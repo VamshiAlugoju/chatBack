@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { v4 as uuid } from "uuid";
 import workspaceModel from "../models/workspaceModel";
 import directsModel from "../models/directsModel";
@@ -146,6 +146,16 @@ export const closeDirect = async (
     return next(err);
   }
 };
+
+export async function getAllDirects(req: Request, res: Response) {
+  try {
+    const { workspace_id } = req.params;
+    const directs = await directsModel.find({ workspaceId: workspace_id });
+    res.status(200).json(directs);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
 
 export const typingIndicator = async (
   req: express.Request,

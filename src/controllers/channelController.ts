@@ -50,6 +50,17 @@ export const createChannel = async (req: Request, res: Response) => {
   }
 };
 
+export async function getAllChanells(req: Request, res: Response) {
+  try {
+    const { workspace_id } = req.params;
+    const channels = await channelModel.find({ workspaceId: workspace_id });
+    return res.json({ channels });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+}
+
 export const updateChannel = async (req: Request, res: Response) => {
   try {
     const { id: channelId } = req.params;

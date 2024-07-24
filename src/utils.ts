@@ -4,62 +4,62 @@ import fetch from "node-fetch";
 export const removeExtraSpaces = (str: string) =>
   str.replace(/\s+/g, " ").trim();
 
-export const postData = async (url: string, data: any, addHeaders?: any) => {
-  const headers =
-    addHeaders !== null
-      ? {
-          "Content-Type": "application/json",
-          ...addHeaders,
-        }
-      : {};
-  const res = await fetch(url, {
-    method: "post",
-    headers: headers,
-    body: JSON.stringify(data || {}),
-  });
-  if (!res.ok) {
-    const e = await res.json();
-    const error = e;
-    throw error;
-  }
-  const contentType = res.headers.get("content-type");
-  if (contentType && contentType.indexOf("application/json") !== -1)
-    return await res.json();
-  return;
-};
+// export const postData = async (url: string, data: any, addHeaders?: any) => {
+//   // const headers =
+//   //   addHeaders !== null
+//   //     ? {
+//   //         "Content-Type": "application/json",
+//   //         ...addHeaders,
+//   //       }
+//   //     : {};
+//   // const res = await fetch(url, {
+//   //   method: "post",
+//   //   headers: headers,
+//   //   body: JSON.stringify(data || {}),
+//   // });
+//   // if (!res.ok) {
+//   //   const e = await res.json();
+//   //   const error = e;
+//   //   throw error;
+//   // }
+//   // const contentType = res.headers.get("content-type");
+//   // if (contentType && contentType.indexOf("application/json") !== -1)
+//   //   return await res.json();
+//   // return;
+// };
 
-export const deleteData = async (url: string, addHeaders?: any) => {
-  const headers = {
-    "Content-Type": "application/json",
-    ...addHeaders,
-  };
-  const res = await fetch(url, {
-    method: "delete",
-    headers: headers,
-  });
-  if (!res.ok) {
-    const e = await res.json();
-    const error = e;
-    throw error;
-  }
-  return;
-};
+// export const deleteData = async (url: string, addHeaders?: any) => {
+//   const headers = {
+//     "Content-Type": "application/json",
+//     ...addHeaders,
+//   };
+//   const res = await fetch(url, {
+//     method: "delete",
+//     headers: headers,
+//   });
+//   if (!res.ok) {
+//     const e = await res.json();
+//     const error = e;
+//     throw error;
+//   }
+//   return;
+// };
 
-export const fetcher = async (url: string, addHeaders?: any) => {
-  const headers = {
-    "Content-Type": "application/json",
-    ...addHeaders,
-  };
-  const res = await fetch(url, {
-    method: "get",
-    headers,
-  });
-  if (!res.ok) {
-    const e = await res.json();
-    throw e;
-  }
-  return await res.json();
-};
+// export const fetcher = async (url: string, addHeaders?: any) => {
+//   const headers = {
+//     "Content-Type": "application/json",
+//     ...addHeaders,
+//   };
+//   const res = await fetch(url, {
+//     method: "get",
+//     headers,
+//   });
+//   if (!res.ok) {
+//     const e = await res.json();
+//     throw e;
+//   }
+//   return await res.json();
+// };
 
 export const logTime = (date = new Date()) => {
   const year = date.getUTCFullYear();

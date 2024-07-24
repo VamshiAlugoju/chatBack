@@ -76,6 +76,33 @@ export async function createWorkSpace(req: Request, res: Response) {
   }
 }
 
+export const getWorkspace = async (req: Request, res: Response) => {
+  try {
+    const { id: workspaceId } = req.params;
+    const { uid } = res.locals;
+    const workspace = await workspaceModel.findOne({
+      where: {
+        objectId: workspaceId,
+      },
+    });
+    if (!workspace) throw new Error("workspace not found");
+    if (!workspace.members.includes(uid))
+      throw new Error("The user is not a member of the workspace.");
+    return res.json({ workspace });
+  } catch (err) {
+    return res.status(500).json({ error: err });
+  }
+};
+
+export async function getAllWorkspaces(req: Request, res: Response) {
+  try {
+    const workspaces = await workspaceModel.find();
+    return res.json({ workspaces });
+  } catch (err) {
+    return res.status(500).json({ error: err });
+  }
+}
+
 // export const updateWorkspace = async (req: Request, res: Response) => {
 //   try {
 //     const { id: workspaceId } = req.params;
