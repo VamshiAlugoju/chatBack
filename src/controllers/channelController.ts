@@ -12,7 +12,7 @@ export const createChannel = async (req: Request, res: Response) => {
     const { uid } = res.locals;
 
     const workspace = await workspaceModel.findOne({
-      _id: workspaceId,
+      objectId: workspaceId,
       members: uid,
     });
     if (!workspace) throw new Error("The user is not in the workspace.");

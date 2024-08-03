@@ -11,7 +11,7 @@ export const removeExtraSpaces = (str: string) =>
 //   //         "Content-Type": "application/json",
 //   //         ...addHeaders,
 //   //       }
-//   //     : {};
+//   //     : {}
 //   // const res = await fetch(url, {
 //   //   method: "post",
 //   //   headers: headers,

@@ -16,10 +16,10 @@ export async function authMiddleware(
     const secretKey = process.env.JWTSECRETKEY
       ? process.env.JWTSECRETKEY
       : "secret";
-    const jwtRes = jwt.verify(token, secretKey);
+    const jwtRes = jwt.verify(token.split(" ")[1], secretKey);
     if (typeof jwtRes !== "string") {
       const user = jwtRes;
-      console.log(user.sub, "?>>>>>>>>>>>>....");
+
       const userDoc = await usermodel.findOne({ _id: user.sub }, { role: 1 });
       if (userDoc) {
         res.locals.uid = userDoc._id;

@@ -29,9 +29,9 @@ export const signin = async (req: Request, res: Response) => {
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { email, password, fullName } = req.body;
+    const { email, password, name } = req.body;
     const objectId = uuid();
-    const user = new usermodel({ objectId, email, password, fullName });
+    const user = new usermodel({ objectId, email, password, fullName: name });
     await user.save();
     const token = generateJwtToken(user._id.toString());
     return res.json({ token, user });
@@ -40,7 +40,6 @@ export const signup = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Server error" });
   }
 };
-
 export const getUser = async (req: Request, res: Response) => {
   try {
     const user = await usermodel.findById(req.params.id);
@@ -68,3 +67,13 @@ export const updateLastPresence = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+export async function getUserByToken(req: Request, res: Response) {
+  try {
+    const { uid } = res.locals;
+    const user = await usermodel.findOne({ _id: uid });
+    return res.json(user);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+}

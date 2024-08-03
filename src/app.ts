@@ -8,13 +8,18 @@ import * as messages from "./controllers/messageController";
 import * as workspaceControler from "./controllers/workSpaceController";
 const app = express();
 
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(express.json());
 app.use(cors());
 
 const channelsRouter = express.Router();
-// channelsRouter.use(authMiddleware);
+channelsRouter.use(authMiddleware);
 channelsRouter.get("/:workspace_id", channels.getAllChanells);
-// channelsRouter.post("/", channels.createChannel);
+channelsRouter.post("/", channels.createChannel);
 // channelsRouter.post("/:id", channels.updateChannel);
 // channelsRouter.post("/:id/members", channels.addMember);
 // channelsRouter.delete("/:id/members/:userId", channels.deleteMember);
@@ -48,9 +53,10 @@ messagesRouter.post("/", messages.createMessage);
 // messagesRouter.post("/:id/reactions", messages.editMessageReaction);
 
 const usersRouter = express.Router();
-// usersRouter.use(authMiddleware);
 usersRouter.post("/signup", userController.signup);
 usersRouter.post("/login", userController.signin);
+// usersRouter.use(authMiddleware);
+usersRouter.use("/token", authMiddleware, userController.getUserByToken);
 // usersRouter.post("/:id", authMiddleware, users.updateUser);
 usersRouter.post("/:id/presence", userController.updateLastPresence);
 // usersRouter.post("/:id/read", authMiddleware, users.read);
@@ -65,7 +71,7 @@ async function startSever() {
   try {
     const mongoClient = await connectDb();
     app.listen(5000, () => {
-      console.log("server is running on port 3000");
+      console.log("server is running on port 5000");
     });
   } catch (err) {
     console.log(err);
@@ -73,3 +79,7 @@ async function startSever() {
 }
 
 startSever();
+
+app.use("/test", (req, res) => {
+  return res.send("hello");
+});
