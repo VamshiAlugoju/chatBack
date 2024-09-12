@@ -13,7 +13,7 @@ export async function createWorkSpace(req: Request, res: Response) {
     const { uid } = res.locals;
     const workSpaceId = uuid();
     const channelId = uuid();
-    const promises = [];
+    const promises =  [];
     promises.push(
       channelModel.create({
         objectId: channelId,
@@ -39,7 +39,7 @@ export async function createWorkSpace(req: Request, res: Response) {
     const [channel, direct] = await Promise.all(promises);
     const channelDetail = await detailsModel.create({
       objectId: uuid(),
-      chatId: channelId,
+      chatId: channel.id,
       lastRead: 0,
       userId: uid,
       workspaceId: workSpaceId,
@@ -51,11 +51,11 @@ export async function createWorkSpace(req: Request, res: Response) {
       userId: uid,
       workspaceId: workSpaceId,
     });
-    const user = await usermodel.findOne({ objectId: uid });
+    const user = await usermodel.findOne({ _id: uid });
     user?.workspaces.push(workSpaceId);
     const workSpace = await workspaceModel.create({
       objectId: workSpaceId,
-      channelId: channelId,
+      channelId: channel.id,
       details: "",
       members: [uid],
       name: name,
@@ -66,8 +66,7 @@ export async function createWorkSpace(req: Request, res: Response) {
     await user?.save();
     return res.json({
       workSpaceId,
-      channelId,
-
+      channelId :channel.id,
       channelDetail,
       chatDetail,
     });

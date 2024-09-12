@@ -1,4 +1,4 @@
-import express, { Request, Response, Express, Router } from "express";
+import express, { Request, Response, Express, Router, NextFunction } from "express";
 import cors from "cors";
 import connectDb from "./config/dbConfig";
 import * as userController from "./controllers/userController";
@@ -15,6 +15,12 @@ app.use(
 );
 app.use(express.json());
 app.use(cors());
+
+app.use((req :Request , res:Response , next : NextFunction)=>{
+
+  console.log( req.originalUrl , `method : ${req.method}`)
+  return next()
+})
 
 const channelsRouter = express.Router();
 channelsRouter.use(authMiddleware);
@@ -80,6 +86,6 @@ async function startSever() {
 
 startSever();
 
-app.use("/test", (req, res) => {
+app.use("/test", (req : Request, res : Response) => {
   return res.send("hello");
 });
